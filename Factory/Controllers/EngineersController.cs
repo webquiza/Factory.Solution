@@ -1,41 +1,39 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
-using DoctorOffice.Models;
+using Factory.Models;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace DoctorOffice.Controllers
+namespace Factory.Controllers
 {
-  public class DoctorsController : Controller
+  public class EngineersController : Controller
   {
-    private readonly DoctorOfficeContext _db;
+    private readonly FactoryContext _db;
 
-    public DoctorsController(DoctorOfficeContext db)
+    public EngineersController(FactoryContext db)
     {
       _db = db;
     }
-
     public ActionResult Index()
     {
-      List<Doctor> model = _db.Doctors.ToList();
-      return View(model);
+      return View(_db.Engineers.ToList());
     }
 
     public ActionResult Create()
     {
-      ViewBag.SpecialtyId = new SelectList(_db.Specialties, "SpecialtyId", "Name");
+      ViewBag.MachineId = new SelectList(_db.Machines, "MachineId", "Name");
       return View();
     }
 
     [HttpPost]
-    public ActionResult Create(Doctor doctor, int SpecialtyId)
+    public ActionResult Create(Engineer engineer, int MachineId)
     {
-      _db.Doctors.Add(doctor);
+      _db.Engineers.Add(engineer);
       _db.SaveChanges();
-      if (SpecialtyId != 0)
+      if (MachineId != 0)
       {
-        _db.SpecialtyDoctor.Add(new SpecialtyDoctor() { SpecialtyId = SpecialtyId, DoctorId = doctor.DoctorId });
+        _db.EngineerMachine.Add(new EngineerMachine() { MachineId = MachineId, EngineerId = engineer.EngineerId });
       }
       _db.SaveChanges();
       return RedirectToAction("Index");
@@ -43,39 +41,74 @@ namespace DoctorOffice.Controllers
 
     public ActionResult Details(int id)
     {
-      var thisDoctor = _db.Doctors
-          .Include(doctor => doctor.JoinEntities)
-          .ThenInclude(join => join.Patient)
-          .FirstOrDefault(doctor => doctor.DoctorId == id);
-      return View(thisDoctor);
+      var thisEngineer = _db.Engineers
+          .Include(engineer => engineer.JoinEntities)
+          .ThenInclude(join => join.Machine)
+          .FirstOrDefault(engineer => engineer.EngineerId == id);
+      return View(thisEngineer);
     }
     public ActionResult Edit(int id)
     {
-      var thisDoctor = _db.Doctors.FirstOrDefault(doctor => doctor.DoctorId == id);
-      return View(thisDoctor);
+      var thisEngineer = _db.Engineers.FirstOrDefault(engineer => engineer.EngineerId == id);
+      ViewBag.MachineId = new SelectList(_db.Machines, "MachineId", "Name");
+      return View(thisEngineer);
     }
 
     [HttpPost]
-    public ActionResult Edit(Doctor doctor)
+    public ActionResult Edit(Engineer engineer, int MachineId)
     {
-      _db.Entry(doctor).State = EntityState.Modified;
+      if (MachineId != 0)
+      {
+        _db.EngineerMachine.Add(new EngineerMachine() { MachineId = MachineId, EngineerId = engineer.EngineerId });
+      }
+      _db.Entry(engineer).State = EntityState.Modified;
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
+
+    public ActionResult AddMachine(int id)
+    {
+      var thisEngineer = _db.Engineers.FirstOrDefault(engineer => engineer.EngineerId == id);
+      ViewBag.MachineId = new SelectList(_db.Machines, "MachineId", "Name");
+      return View(thisEngineer);
+    }
+
+    [HttpPost]
+    public ActionResult AddMachine(Engineer engineer, int MachineId)
+    {
+      if (MachineId != 0)
+      {
+        if (_db.EngineerMachine.Any(join => join.MachineId == MachineId && join.EngineerId == engineer.EngineerId) == false)
+        {
+          _db.EngineerMachine.Add(new EngineerMachine() { MachineId = MachineId, EngineerId = engineer.EngineerId });
+        }
+      }
       _db.SaveChanges();
       return RedirectToAction("Index");
     }
 
     public ActionResult Delete(int id)
     {
-      var thisDoctor = _db.Doctors.FirstOrDefault(doctor => doctor.DoctorId == id);
-      return View(thisDoctor);
+      var thisEngineer = _db.Engineers.FirstOrDefault(engineer => engineer.EngineerId == id);
+      return View(thisEngineer);
     }
 
     [HttpPost, ActionName("Delete")]
     public ActionResult DeleteConfirmed(int id)
     {
-      var thisDoctor = _db.Doctors.FirstOrDefault(doctor => doctor.DoctorId == id);
-      _db.Doctors.Remove(thisDoctor);
+      var thisEngineer = _db.Engineers.FirstOrDefault(engineer => engineer.EngineerId == id);
+      _db.Engineers.Remove(thisEngineer);
       _db.SaveChanges();
       return RedirectToAction("Index");
+    }
+
+    [HttpPost]
+    public ActionResult DeleteMachine(int joinId)
+    {
+      var joinEntry = _db.EngineerMachine.FirstOrDefault(entry => entry.EngineerMachineId == joinId);
+      _db.EngineerMachine.Remove(joinEntry);
+      _db.SaveChanges();
+      return RedirectToAction("Details", new { id = joinEntry.EngineerId });
     }
   }
 }
