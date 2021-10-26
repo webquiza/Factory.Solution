@@ -1,17 +1,17 @@
 using System.Collections.Generic;
 
-namespace DoctorOffice.Models
+namespace Factory.Models
 {
-    public class Patient
+    public class Machine
     {
-        public Patient()
+        public Machine()
         {
-            this.JoinEntities = new HashSet<DoctorPatient>();
+            this.JoinEntities = new HashSet<EngineerMachine>();
         }
 
-        public int PatientId { get; set; }
-        public string Description { get; set; }
+        public int MachineId { get; set; }
+        public string Name { get; set; }
 
-        public virtual ICollection<DoctorPatient> JoinEntities { get;}
+        public virtual ICollection<EngineerMachine> JoinEntities { get;}
     }
 }

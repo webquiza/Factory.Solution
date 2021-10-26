@@ -1,17 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace DoctorOffice.Models
+namespace Factory.Models
 {
-  public class DoctorOfficeContext : DbContext
+  public class FactoryContext : DbContext
   {
-    public DbSet<Doctor> Doctors { get; set; }
-    public DbSet<Patient> Patients { get; set; }
-    public DbSet<Specialty>  Specialties { get; set; }
-    public DbSet<DoctorPatient> DoctorPatient { get; set; }
+    public DbSet<Engineer> Engineers { get; set; }
+    public DbSet<Machine> Machines { get; set; }
+    public DbSet<EngineerMachine> EngineerMachine { get; set; }
    
-    
-    public DbSet<SpecialtyDoctor> SpecialtyDoctor { get; set; }
-    public DoctorOfficeContext(DbContextOptions options) : base(options) { }
+    public FactoryContext(DbContextOptions options) : base(options) { }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
