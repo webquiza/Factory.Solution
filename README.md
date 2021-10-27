@@ -21,7 +21,7 @@
 _This MVC web application has the following functionality:_
 
 * _As the factory manager, I can see a list of all engineers and a seperate list for all machines._
-* _As the factory manager, I can select an engineer, see their details and see a list of all machines that specific engineer is licensed to work on.
+* _As the factory manager, I can select an engineer, see their details and see a list of all machines that specific engineer is licensed to work on._
 * _As the factory manager, I can select a machine, see its details and see a list of all engineers licensed to work on it._
 * _As the factory manager, I can add new engineers to the system as they are hired. I can also add new machines to the system as they are installed._
 * _As the factory manager, I can add new machines even if no engineers are employed. I can aslo add new engineers even if no machines are installed._
