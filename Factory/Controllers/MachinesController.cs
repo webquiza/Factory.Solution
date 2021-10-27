@@ -82,7 +82,7 @@ namespace Factory.Controllers
       {
         if (_db.EngineerMachine.Any(join => join.EngineerId == EngineerId && join.MachineId == machine.MachineId) == false)
         {
-          _db.EngineerMachine.Add(new EngineerMachine() { EngineerId = EngineerId, EngineerId = machine.MachineId });
+          _db.EngineerMachine.Add(new EngineerMachine() { EngineerId = EngineerId, MachineId = machine.MachineId });
         }
       }
       _db.SaveChanges();
