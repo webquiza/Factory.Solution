@@ -20,11 +20,13 @@
 
 _This MVC web application has the following functionality:_
 
-* _._
-* _._
-* _._
-* _._
-* _._
+* _As the factory manager, I can see a list of all engineers and a seperate list for all machines._
+* _As the factory manager, I can select an engineer, see their details and see a list of all machines that specific engineer is licensed to work on.
+* _As the factory manager, I can select a machine, see its details and see a list of all engineers licensed to work on it._
+* _As the factory manager, I can add new engineers to the system as they are hired. I can also add new machines to the system as they are installed._
+* _As the factory manager, I can add new machines even if no engineers are employed. I can aslo add new engineers even if no machines are installed._
+* _As the factory manager, I can add or remove machines that a specific engineer is licensed to work on. I can also modify this relationship from the other side, and add or remove engineers from a specific machine._
+* _As the factory manager, I can navigate to a splash page that lists all engineers and machines. I can click on an individual engineer or machine to see all the engineers/machines that belong to it._
 
 ## Setup/Installation Requirements
 
@@ -36,16 +38,8 @@ _This MVC web application has the following functionality:_
 * _Run `git clone https://github.com/webquiza/Factory.Solution.git`._
 * _Press Enter._
 
-#### **Import database**
+#### **Connect database**
 
-* _Launch your MySQL Workbench._
-* _Navigate to the Navigator > Administration window and select the Data Import/Restore option._
-* _In Import Options section select Import from Self-Contained File._
-* _Navigate to the `Factory.Solution` folder._
-* _Select `carlos_urquiza.sql` as the dump file._
-* _Click Ok._
-* _From the Import Progress tab, click Start Import which is located at the bottom right section of the window._
-* _Once import completes, go to the Navigator > Schemas tab. Right click to select Refesh All. You will now see the database appear._
 * _Connect the database to the project by creating a `appsettings.json` file inside `Factory.Solution/Factory`._
 * _Within your new `appsettings.json` file, add the following piece of code. Note that you will need to enter the password you created for your specific MySQL configuration ( remove the [ ] ):_
 
@@ -56,11 +50,11 @@ _This MVC web application has the following functionality:_
   }
 }
 ```
-#### **View project in local host**
 
 * _Navigate to `Factory` directory._
 * _Run `dotnet restore` to retrieve and install the packages we listed in .csproj._
 * _Run `dotnet build` to build the project._
+* _Update the database by running `dotnet ef database update` (ensure you have MySQL Workbench open)._ 
 * _Run `dotnet run` to start up your local host (http://localhost:5000)._
 
 ## Known Bugs
